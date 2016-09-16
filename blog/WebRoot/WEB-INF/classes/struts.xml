@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+<!--  
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.devMode" value="true" />
+
+    <package name="default" namespace="/" extends="struts-default">
+
+        <default-action-ref name="index" />
+
+        <global-results>
+            <result name="error">/WEB-INF/jsp/error.jsp</result>
+        </global-results>
+
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.Exception" result="error"/>
+        </global-exception-mappings>
+
+        <action name="index">
+            <result type="redirectAction">
+                <param name="actionName">HelloWorld</param>
+                <param name="namespace">/example</param>
+            </result>
+        </action>
+    </package>
+
+    <include file="example.xml"/>
+-->
+		<constant name="struts.devMode" value="true"/>
+		 <constant name="struts.enable.DynamicMethodInvocation" value="true"/>
+		 	
+  <package name="default" extends="struts-default" namespace="/">
+  <interceptors>
+    <interceptor name="myIterceptor" class="com.AdesKing.Interceptor.SessionInterceptor"></interceptor>
+    </interceptors>
+    <action name="index" class="com.AdesKing.Action.AritcleAction" method="list">
+     <param name="article.page">1</param>
+    <result >/index.jsp</result>
+    </action>
+    
+    <action name="massage" class="com.AdesKing.Action.AritcleAction" method="div">
+    <result >/massage.jsp</result>
+    </action>
+    
+    <action name="massageDetail" class="com.AdesKing.Action.AritcleAction" method="massage_Detail">
+    <result >/massage_Detail.jsp</result>
+    </action>
+    
+    <action name="massageDelete" class="com.AdesKing.Action.AritcleAction">
+    <result type="chain">massage</result>
+     <result name="input">/login.jsp</result>
+     <interceptor-ref name="myIterceptor"></interceptor-ref>
+    <interceptor-ref name="defaultStack"></interceptor-ref>
+    </action>
+    
+    
+    <action name="massage_login" class="com.AdesKing.Action.LoginAction">
+    <result type="chain">massage</result>
+    <result name="error1">/login.jsp</result>
+    <result name="error">/login.jsp</result>
+    <exception-mapping result="reLogin" exception="java.lang.NullPointerException"></exception-mapping>
+    <result name="reLogin">/login.jsp</result>
+    </action>
+    
+    <action name="writerring" class="com.AdesKing.Action.AritcleAction" method="update">
+    <result type="chain" name="noUpdate">writern</result>
+    <result >/writer.jsp</result>
+    <result name="input">/login.jsp</result>
+    <interceptor-ref name="myIterceptor"></interceptor-ref>
+    <interceptor-ref name="defaultStack"></interceptor-ref>
+    </action>
+    
+    
+    
+      <action name="writern" class="com.AdesKing.Action.AritcleAction">
+    <result >/writer.jsp</result>
+    </action>
+    
+    
+</package>      
+    
+</struts>
